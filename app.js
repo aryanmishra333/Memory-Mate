@@ -926,3 +926,23 @@ app.listen(process.env.PORT || 3000, function () {
   console.log(process.env.PORT);
   console.log("Server Started at http://localhost:3000/");
 });
+
+app.post("/mood", (req, res) => {
+  const mood = req.body.mood;
+  console.log(`Mood selected: ${mood}`);
+  res.redirect("/news");
+});
+
+app.post("/analyze", (req, res) => {
+  let score = 0;
+  if (req.body.q1 === "4") {
+      score++;
+  }
+  console.log(`MCQ Score: ${score}`);
+  res.redirect("/news");
+});
+
+const newsRoutes = require("./routes/news");
+app.use(express.json()); // ✅ Middleware to parse JSON body
+app.use("/", newsRoutes);
+
