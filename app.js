@@ -13,7 +13,7 @@ const multer = require("multer");
 const { GoogleGenerativeAI } = require("@google/generative-ai"); // ✅ Correct import
 
 // MongoDB connection
-const uri = "mongodb+srv://vishaka:Vishaka@cluster0.u0mor.mongodb.net/alzheimers?retryWrites=true&w=majority";
+const uri = "mongodb+srv://atharvgk:1234@cluster0.ipvvsiu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
