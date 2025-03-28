@@ -1,20 +1,22 @@
 const express = require("express");
-const app = express();
-var mongoose = require("mongoose");
-var passport = require("passport");
-var bodyParser = require("body-parser");
-var LocalStrategy = require("passport-local");
-var LocalMongoose = require("passport-local-mongoose");
-var User = require("./models/user"),
-  Relative = require("./models/mycircle"),
-  Event = require("./models/events"),
-  fs = require("fs"),
-  path = require("path");
-var multer = require("multer");
-const uri =
-  "mongodb+srv://vishaka:Vishaka@cluster0.u0mor.mongodb.net/alzheimers?retryWrites=true&w=majority";
-//const uri = process.env.DATABASEURL;
-var storage = multer.diskStorage({
+const mongoose = require("mongoose");
+const passport = require("passport");
+const bodyParser = require("body-parser");
+const LocalStrategy = require("passport-local");
+const LocalMongoose = require("passport-local-mongoose");
+const User = require("./models/user");
+const Relative = require("./models/mycircle");
+const Event = require("./models/events");
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+const { GoogleGenerativeAI } = require("@google/generative-ai"); // ✅ Correct import
+
+// MongoDB connection
+const uri = "mongodb+srv://vishaka:Vishaka@cluster0.u0mor.mongodb.net/alzheimers?retryWrites=true&w=majority";
+
+// Multer setup for file uploads
+const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads");
   },
@@ -22,18 +24,50 @@ var storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now());
   },
 });
-var upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
+
+// NewsAPI setup
 const NewsAPI = require("newsapi");
-const { type } = require("os");
-const { ESRCH } = require("constants");
-//const NEWSAPIKEY = process.env.NEWSAPIKEY;
 const NEWSAPIKEY = "3dd595f2d707459499de0e17e7861822";
 const newsapi = new NewsAPI(NEWSAPIKEY);
 
+const app = express();
+
+// ✅ Initialize GoogleGenerativeAI properly
+const GEMINI_API_KEY = "AIzaSyAZkPoXfK-JEk-aDcEy1XxYw4NsiIu69JU";
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY); // ✅ Use `new`
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.set("view engine", "ejs");
+
+// Route to render entertainment page
+app.get("/entertainment", (req, res) => {
+  res.render("entertainment", { response: "" }); // ✅ Ensure response is always defined
+});
+
+// ✅ Fixed AI Companion Route
+app.post("/ask-companion", async (req, res) => {
+  const userMessage = req.body.message; // ✅ Ensure this matches the input name in entertainment.ejs
+
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // ✅ Correct model
+
+    const result = await model.generateContent(userMessage); // ✅ Correct API call
+    const reply = result.response.text() || "Sorry, I didn't understand that."; // ✅ Extract response safely
+
+    res.render("entertainment", { response: reply });
+  } catch (error) {
+    console.error("Error calling Gemini API:", error.message);
+    res.render("entertainment", { response: "Error processing your request." });
+  }
+});
+
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
-
 const flash = require("connect-flash");
+
+
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
