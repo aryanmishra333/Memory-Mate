@@ -1,53 +1,79 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="/stylesheets/app.css">
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<!--Fonts-->
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-	<!--Font Awesome-->
-	<script src="https://kit.fontawesome.com/3808de5cb1.js" crossorigin="anonymous"></script>
-
-	<title>Landing</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemoryMate - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
+<body class="bg-gradient-to-br from-purple-50 to-purple-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 space-y-6">
+        <div class="flex justify-center mb-6">
+            <a href="../">
+                <img src="/img/MemoryMate.png" alt="MemoryMate Logo" class="h-20 object-contain">
+            </a>
+        </div>
 
-<body>
-	<div class="header">
-		<a href="../">
-			<img src="/img/back.png" alt="" height="50px">
-		</a>
-
-	</div>
-
-
-	<div class="container">
-
-		<%if(error && error.length>0){%>
-            <div class="alert alert-danger" role="alert">
-                  <%=error%>
+        <% if (error && error.length > 0) { %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <%= error %>
             </div>
-        <%}%>
-        <%if(success && success.length>0){%>
-            <div class="alert alert-success" role="alert">
-                  <%=success%>
+        <% } %>
+
+        <% if (success && success.length > 0) { %>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <%= success %>
             </div>
-		<%}%>
-		
-		<br><br><br><br><br><br>
-		<h2>Login </h2>
+        <% } %>
 
-		<form action="/login" method="POST">
+        <form action="/login" method="POST" class="space-y-4">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i data-feather="user" class="text-gray-400"></i>
+                </div>
+                <input 
+                    type="text" 
+                    name="username" 
+                    placeholder="Username" 
+                    required
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+            </div>
 
-			<input type="username" name="username" class="form-control" placeholder="Username">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i data-feather="lock" class="text-gray-400"></i>
+                </div>
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Password" 
+                    required
+                    class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+            </div>
 
+            <button 
+                type="submit" 
+                class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition duration-300"
+            >
+                Login
+            </button>
+        </form>
 
-			<input type="password" name="password" class="form-control" placeholder="Password">
+    </div>
 
-			<input type="submit" class="purp-btn">
-		</form>
-
-
-	</div>
+    <script>
+        feather.replace();
+    </script>
 </body>
+</html>
