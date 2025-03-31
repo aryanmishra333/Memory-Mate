@@ -129,23 +129,9 @@ The following environment variables are required to run the application:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 👥 Team
-
-- [Team Member 1]
-- [Team Member 2]
-- [Team Member 3]
-- [Team Member 4]
-
 ## 🙏 Acknowledgments
 
 - Heal O Code 2.0 hackathon organizers
 - face-api.js team for the facial recognition library
 - Google Gemini AI team
 
-## 📞 Support
-
-For support, please open an issue in the GitHub repository or contact the team at [your-email@example.com]
-
-## 🔐 Security
-
-Please report any security issues to [security-email@example.com]
