@@ -113,7 +113,6 @@ The following environment variables are required to run the application:
 | Variable | Description | Required |
 |----------|-------------|----------|
 | MONGODB_URI | MongoDB connection string | Yes |
-| NEWSAPI_KEY | API key for NewsAPI | Yes |
 | GEMINI_API_KEY | API key for Google Gemini AI | Yes |
 | PORT | Server port (default: 3000) | No |
 | SESSION_SECRET | Secret key for session management | Yes |
@@ -142,7 +141,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Heal O Code 2.0 hackathon organizers
 - face-api.js team for the facial recognition library
 - Google Gemini AI team
-- NewsAPI team
 
 ## 📞 Support
 
