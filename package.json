@@ -19,12 +19,8 @@
   "homepage": "https://github.com/abhishek0405/Alzheimers-App#readme",
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
-<<<<<<< HEAD
-    "body-parser": "^1.19.0",
-=======
     "axios": "^1.8.4",
     "body-parser": "^1.20.3",
->>>>>>> a9280f25c495463492fd3a761623040b2335509f
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",

@@ -11,9 +11,10 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const { GoogleGenerativeAI } = require("@google/generative-ai"); // ✅ Correct import
+require('dotenv').config();
 
 // MongoDB connection
-const uri = "mongodb+srv://atharvgk:1234@cluster0.ipvvsiu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGODB_URI;
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
@@ -28,14 +29,12 @@ const upload = multer({ storage: storage });
 
 // NewsAPI setup
 const NewsAPI = require("newsapi");
-const NEWSAPIKEY = "3dd595f2d707459499de0e17e7861822";
-const newsapi = new NewsAPI(NEWSAPIKEY);
+const newsapi = new NewsAPI(process.env.NEWSAPI_KEY);
 
 const app = express();
 
 // ✅ Initialize GoogleGenerativeAI properly
-const GEMINI_API_KEY = "AIzaSyAZkPoXfK-JEk-aDcEy1XxYw4NsiIu69JU";
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY); // ✅ Use `new`
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); // ✅ Use `new`
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -115,12 +114,12 @@ const SAGETestGenerate = () => {
   //add points if matching with answer
   let optionsBool = [true, false];
   let question1 =
-    "Sometimes when I’m looking for something, I forget what it is that I’m looking for.";
+    "Sometimes when I'm looking for something, I forget what it is that I'm looking for.";
   let answer1 = "false";
   let question2 =
-    "My friends and family seem to think I’m more forgetful now than I used to be.";
+    "My friends and family seem to think I'm more forgetful now than I used to be.";
   let answer2 = "false";
-  let question3 = "It’s hard for me to concentrate for even an hour.";
+  let question3 = "It's hard for me to concentrate for even an hour.";
   let answer3 = "false";
   let question4 = "I frequently repeat myself.";
   let answer4 = "false";
@@ -178,7 +177,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   require("express-session")({
-    secret: "KEYTEST",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
@@ -201,8 +200,6 @@ app.use(function (req, res, next) {
 function checkReminders(data) {
   var d = new Date();
   var currDay = d.getDay();
-  console.log(d);
-  console.log(d.getDay());
   var timeStart = new Date().getHours();
   var minStart = new Date().getMinutes();
   var resReminders = [];
@@ -211,14 +208,12 @@ function checkReminders(data) {
     for (let j = 0; j < data[i].days.length; j++) {
       if (data[i].days[j] == currDay) {
         var timeEnd = new Date("01/01/2007 " + data[i].time + ":00").getHours();
+        var minEnd = new Date("01/01/2007 " + data[i].time + ":00").getMinutes();
+        
+        // Check if the reminder is within the next 2 hours
         if (timeEnd - timeStart <= 2 && timeEnd - timeStart >= 0) {
-          console.log("Inside check");
-          console.log(timeEnd - timeStart);
-          if (timeEnd - timeStart == 0) {
-            var minEnd = new Date(
-              "01/01/2007 " + data[i].time + ":00"
-            ).getMinutes();
-            console.log(minEnd - minStart);
+          // If it's the same hour, check minutes
+          if (timeEnd - timeStart === 0) {
             if (minEnd - minStart >= 0) {
               resReminders.push(data[i]);
             }
@@ -229,7 +224,6 @@ function checkReminders(data) {
       }
     }
   }
-  console.log(resReminders);
 
   return resReminders;
 }
@@ -273,6 +267,13 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", upload.single("DP"), function (req, res, next) {
+  // Validate email format
+  const email = req.body.email;
+  if (!email.endsWith('@gmail.com') && !email.endsWith('@Commit')) {
+    req.flash("error", "Email must end with @gmail.com or @Commit");
+    return res.redirect("/register");
+  }
+
   var newUser = new User({
     name: req.body.name,
     username: req.body.username,
