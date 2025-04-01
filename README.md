@@ -42,7 +42,6 @@ Memory Mate is an innovative web application developed during Heal O Code 2.0 ha
 - **Facial Recognition**: face-api.js
 - **AI Integration**: Google Gemini AI
 - **File Storage**: Local file system
-- **News API**: NewsAPI
 
 ## 🚀 Getting Started
 
